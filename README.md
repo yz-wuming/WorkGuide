@@ -26,22 +26,6 @@ WorkGuide 让多个 Agent 在统一的工作流中协作：主 Agent 负责理�
 
 ## Agent 执行流程
 
-```mermaid
-flowchart TD
-    U[用户] --> W[Web UI 或 CLI]
-    W --> G[Gateway API<br/>FastAPI]
-    G --> A[Agent Runtime<br/>LangGraph Harness]
-    A --> M[MODEL<br/>config.yaml 指定]
-    A --> S[SKILLS / TOOLS / MCP<br/>按需调用]
-    A --> SB[SUBAGENT<br/>子 Agent 委派]
-    S --> SNB[SANDBOX<br/>隔离执行]
-    SNB --> A
-    S --> R[结果流式回传]
-    R --> G
-    A --> CT[CONVERSATION / MEMORY<br/>SQLite + DeerMem]
-    CT --> G
-```
-
 典型执行链路：
 
 1. 用户在 **Web UI / CLI** 提交任务。
@@ -54,22 +38,6 @@ flowchart TD
 > 以上为基于当前实现的高层执行链路，具体行为以实际代码与配置为准。
 
 ## 架构
-
-```mermaid
-flowchart LR
-    U[User] --> N[Nginx :2026]
-    N --> F[Frontend<br/>Vite + React :3000]
-    N --> G[Gateway API<br/>FastAPI :8001]
-    G --> A[Agent Runtime<br/>LangGraph Harness]
-    A --> M[Model Provider]
-    A --> SK[Skills]
-    A --> T[Tools]
-    A --> SB[Sandbox Provider]
-    A --> MC[MCP Servers]
-    A --> ME[Memory / DeerMem]
-    A --> DB[(SQLite / Checkpoint)]
-    DB -.可选驱动.-> REDIS[Redis Streams Bridge]
-```
 
 - **前端**（`frontend/`）：Vite + React 聊天界面，通过 `:8001` 调用后端，生产环境经 Nginx 统一入口 `:2026`。
 - **Gateway**（`backend/app/gateway/`）：FastAPI REST 入口，承载线程、技能、模型、记忆、MCP、上传、子 Agent 等路由。

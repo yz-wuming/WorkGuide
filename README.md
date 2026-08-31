@@ -24,7 +24,11 @@ WorkGuide 让多个 Agent 在统一的工作流中协作：主 Agent 负责理�
 
 ### CLI
 
-> CLI 终端界面演示截图将在后续补充。
+<div align="center">
+  <img src="./docs/images/cli-terminal.png" alt="WorkGuide CLI —— 终端界面" width="85%" />
+  <br/>
+  <sub>CLI：命令式任务输入、`/` 命令与`?`帮助、`ready` 状态提示</sub>
+</div>
 
 ## 核心能力
 

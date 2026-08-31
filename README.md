@@ -16,12 +16,6 @@ WorkGuide 让多个 Agent 在统一的工作流中协作：主 Agent 负责理�
 </div>
 <br/>
 
-<div align="center">
-  <img src="./docs/images/ui-entry.png" alt="WorkGuide Web UI —— 初始态" width="85%" />
-  <br/>
-  <sub>Web UI：首次进入的欢迎界面与任务输入窗口</sub>
-</div>
-
 ### CLI
 
 CLI 以命令式、终端风格界面交互：输入 `/` 查看命令、`?` 查看帮助，`ready` 表示就绪。

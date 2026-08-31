@@ -1,0 +1,15 @@
+apiVersion: v2
+name: workguide
+description: WorkGuide — LangGraph-based AI super-agent (gateway + frontend + nginx + sandbox provisioner) deployed to Kubernetes.
+type: application
+version: 2.1.0
+appVersion: "2.1.0"
+keywords:
+  - workguide
+  - langgraph
+  - ai-agent
+  - llm
+home: https://github.com/bytedance/workguide
+icon: https://raw.githubusercontent.com/bytedance/workguide/main/frontend/public/images/deer.svg
+maintainers:
+  - name: WorkGuide

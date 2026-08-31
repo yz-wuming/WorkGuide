@@ -1,0 +1,101 @@
+# WorkGuide docker image cache
+docker/.cache/
+# oh-my-claudecode state
+.omc/
+# OS generated files
+.DS_Store
+*.local
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+.ruff_cache/
+.pytest_cache/
+.pytest-full.log
+
+# Virtual environments
+.venv
+venv/
+
+# Node / frontend build output
+node_modules/
+dist/
+build/
+frontend/dist/
+frontend/node_modules/
+
+# Benchmark outputs
+bench_results.jsonl
+bench_optimized.jsonl
+results.jsonl
+backend/scripts/benchmark/*.jsonl
+
+# Environment variables
+.env
+.env.*
+!.env.example
+
+# Configuration files
+config.yaml
+config.yaml.*.bak
+mcp_config.json
+extensions_config.json
+models.runtime.yaml
+
+# IDE
+.idea/
+.vscode/
+
+# Coverage report
+coverage.xml
+coverage/
+.workguide/
+.claude/
+skills/custom/*
+logs/
+log/
+debug.log
+
+# Local git hooks (keep only on this machine, do not push)
+.githooks/
+
+# pnpm
+.pnpm-store
+sandbox_image_cache.tar
+
+# Local build logs & test artifacts
+docker-build.log
+docker-gateway-build*.log
+docker-frontend-build*.log
+test-results/
+
+# Hypothesis test example database
+.hypothesis/
+
+# ignore the legacy `web` folder
+web/
+
+# Deploy artifacts
+pr-build/
+backend/Dockerfile.langgraph
+config.yaml.bak
+.playwright-mcp
+/frontend/test-results/
+/frontend/playwright-report/
+.gstack/
+.worktrees
+
+# Local agent tooling (do not publish)
+.agent/
+
+# Monocle agent-observability trace output (local file exporter)
+.monocle/
+
+# Idea/WorkBuddy local agent memory & screenshots (do not publish)
+.workbuddy/

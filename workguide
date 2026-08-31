@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+# One-command WorkGuide launcher for Git Bash / WSL / macOS / Linux.
+# Usage: workguide
+#        workguide --no-browser
+#        workguide --stop
+
+cd "$(dirname "$0")" || exit 1
+python scripts/launch_workguide.py "$@"

@@ -1,0 +1,85 @@
+﻿name: CI
+
+# 本仓库（WorkGuide 自定义演示版）的最小发布门槛 CI：
+#   - backend-core   : uv 安装后端依赖 + 运行核心测试（Skill / Thread / Storage，Linux 下含 symlink 用例）
+#   - frontend-build : pnpm 安装 + 类型检查 + 生产构建
+# 说明：
+#   - 真实模型 / Playwright「真实 Agent 浏览器链路」依赖 config.yaml/.env 中的模型与 API Key，
+#     不在 headless CI 跑；它们已在本地完整验证。
+#   - 后端全量 pytest 中含大量 Windows/外部服务相关用例，不在本最小门槛判定范围内。
+
+on:
+  push:
+  pull_request:
+
+concurrency:
+  group: ci-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  backend-core:
+    name: Backend core tests (skills/threads/storage)
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v7
+        with:
+          # 与 backend/Dockerfile 及 backend/tests/test_ci_uv_version_pin.py 保持一致
+          version: "0.12.5"
+
+      - name: Install backend dependencies
+        working-directory: backend
+        run: uv sync --all-groups --locked
+
+      - name: Run core tests
+        working-directory: backend
+        run: |
+          PYTHONPATH=. PYTHONIOENCODING=utf-8 UV_HTTP_TIMEOUT=120 \
+          uv run pytest \
+            tests/test_skills_custom_router.py \
+            tests/test_user_scoped_skill_storage.py \
+            tests/test_local_skill_storage_write.py \
+            tests/test_threads_router.py \
+            -q
+
+  frontend-build:
+    name: Frontend typecheck + build
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Enable Corepack and pin pnpm
+        run: corepack enable && corepack prepare pnpm@11.24.0 --activate
+
+      - name: Install frontend dependencies
+        working-directory: frontend
+        run: pnpm install --frozen-lockfile
+
+      - name: Typecheck
+        working-directory: frontend
+        run: pnpm exec tsc --noEmit
+
+      - name: Build
+        working-directory: frontend
+        run: pnpm build

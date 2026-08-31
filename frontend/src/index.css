@@ -1,0 +1,341 @@
+@import "tailwindcss";
+
+/* ============================================================
+   WorkGuide Design System —— 专业、克制、现代的 AI Desktop 工作台
+   中性纯色背景（无图片/渐变/毛玻璃），石墨灰为主操作色，黑+灰+白+极少量绿
+   264px 侧边栏 + 中性主区 + 悬浮式 Composer
+   ============================================================ */
+@theme {
+  /* 表面 —— Neutral / Graphite 中性系统 */
+  --color-canvas: #f4f6f8;      /* 主区 / 页面基色 */
+  --color-canvas-2: #f7f8fa;    /* 侧边栏 */
+  --color-surface: #ffffff;     /* 浮层 / 输入卡 */
+  --color-surface-2: #eef0f2;   /* 中性 hover */
+  --color-surface-3: #e5e7ea;   /* 选中 / active */
+
+  /* 文字 */
+  --color-ink: #17191c;         /* 主文字 */
+  --color-ink-2: #30343a;       /* 次级强调文字 */
+  --color-ink-3: #68707a;       /* 次级文字 */
+  --color-muted: #8a9199;       /* 辅助文字 */
+
+  /* 线条 */
+  --color-line: #e6e8eb;        /* 一级分割线 / 侧边栏边框 */
+  --color-line-2: #d9dde2;      /* 输入卡 / Composer 边框 */
+
+  /* 强调 —— 中性石墨色为主操作色，无彩色强调 */
+  --color-primary: #30343a;
+  --color-primary-hover: #20242a;
+  --color-primary-active: #17191c;
+  --color-primary-soft: #f1f2f4;     /* primary hover 底 */
+  --color-primary-soft-2: #e7e9ec;   /* primary active 底 */
+  --color-primary-deep: #17191c;     /* check 图标等密色 */
+  --color-primary-tint: #eef0f2;     /* 选中卡片底 */
+
+  /* 状态真实色 */
+  --color-success: #4f8a68;     /* 连接状态 */
+  --color-success-text: #4f8a68;
+  --color-success-soft: #eaf3ee;
+  --color-error: #dc2626;
+  --color-error-soft: #fef2f2;
+  --color-error-text: #b91c1c;
+
+  /* 圆角 —— 小钮 6–8 / 会话 8 / 输入 16 / 用户消息 12 */
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 10px;
+  --radius-xl: 12px;
+  --radius-2xl: 16px;
+
+  /* 字体 —— 系统优先，中文清晰 */
+  --font-sans: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Microsoft YaHei UI",
+    system-ui, sans-serif;
+  --font-mono: ui-monospace, "SF Mono", "JetBrains Mono", Menlo, Consolas,
+    "PingFang SC Mono", monospace;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--color-ink);
+  background: var(--color-canvas);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow: hidden;
+}
+
+:focus-visible {
+  outline: 2px solid rgba(120, 130, 145, 0.35);
+  outline-offset: 1px;
+  border-radius: var(--radius-sm);
+}
+
+/* 输入类聚焦永不显示描边框（焦点态由 Composer 自身 ring 表达） */
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  outline: none;
+}
+
+::selection {
+  background: var(--color-primary-soft);
+  color: var(--color-ink);
+}
+
+/* ============ Task Composer —— 整页最核心区域 ============
+   680px / 96px 默认高 / 18px 圆角 / 二级边框 #D9DDE2
+   柔和悬浮层级：主投影 + 近层投影 + 顶部 1px 高光（轻玻璃感，非毛玻璃）
+   聚焦 → 边框 #B9C1CB + 3px 中性浅 ring（无彩色发光） */
+.composer {
+  position: relative;
+  background: #ffffff;
+  border: 1px solid #d9dde2;
+  border-radius: 18px;
+  box-shadow:
+    0 18px 44px rgba(18, 28, 40, 0.10),
+    0 4px 14px rgba(18, 28, 40, 0.05);
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+/* 顶部内高光 —— 让白色卡片在纯色底上更有“玻璃/浮层”质感 */
+.composer::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.9), transparent);
+  border-radius: 18px 18px 0 0;
+  pointer-events: none;
+}
+
+.composer:focus-within {
+  border-color: #b9c1cb;
+  box-shadow:
+    0 20px 48px rgba(18, 28, 40, 0.12),
+    0 4px 14px rgba(18, 28, 40, 0.05),
+    0 0 0 3px rgba(120, 130, 145, 0.08);
+}
+
+/* ============ Thinking 状态（全局唯一） ============ */
+@keyframes spin360 {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.spin-soft {
+  animation: spin360 1s linear infinite;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes msg-in {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.anim-fade {
+  animation: fade-in 0.18s ease-out both;
+}
+
+.anim-msg-in {
+  animation: msg-in 0.2s ease-out both;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.35;
+  }
+}
+
+.anim-pulse {
+  animation: pulse 1.4s ease-in-out infinite;
+}
+
+/* ============ 滚动条（6px 细条） ============ */
+.scroll-slim {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 0, 0, 0.16) transparent;
+}
+
+.scroll-slim::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.scroll-slim::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.16);
+  border-radius: 9999px;
+}
+
+.scroll-slim::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.26);
+}
+
+.scroll-slim::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* ============ Markdown 正文（Agent 回复，无气泡，左对齐） ============ */
+.prose-md {
+  color: #24282d;
+  line-height: 1.75;
+  font-size: 16px;
+}
+
+.prose-md code {
+  background: var(--color-surface-2);
+  color: var(--color-ink);
+  padding: 2px 5px;
+  border-radius: 4px;
+  font-size: 0.9em;
+  font-family: var(--font-mono);
+  word-break: break-word;
+}
+
+.prose-md pre {
+  background: #f3f4f6;
+  color: var(--color-ink);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-md);
+  padding: 14px 16px;
+  overflow-x: auto;
+  font-size: 13.5px;
+  font-family: var(--font-mono);
+  line-height: 1.65;
+  margin: 12px 0;
+}
+
+.prose-md pre code {
+  background: transparent;
+  color: inherit;
+  padding: 0;
+  border-radius: 0;
+  font-size: inherit;
+}
+
+.prose-md a {
+  color: var(--color-primary);
+  text-decoration: none;
+}
+
+.prose-md a:hover {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.prose-md h1 {
+  font-size: 1.5rem;
+  font-weight: 650;
+  margin: 24px 0 10px;
+}
+
+.prose-md h2 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin: 20px 0 8px;
+}
+
+.prose-md h3 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin: 16px 0 6px;
+}
+
+.prose-md p {
+  margin: 8px 0;
+}
+
+.prose-md ul,
+.prose-md ol {
+  margin: 8px 0;
+  padding-left: 22px;
+}
+
+.prose-md li {
+  line-height: 1.7;
+  margin: 4px 0;
+}
+
+.prose-md blockquote {
+  margin: 10px 0;
+  padding: 4px 16px;
+  border-left: 2px solid var(--color-line);
+  color: var(--color-ink-3);
+}
+
+.prose-md table {
+  border-collapse: collapse;
+  font-size: 14px;
+  margin: 12px 0;
+  width: 100%;
+}
+
+.prose-md table th,
+.prose-md table td {
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  padding: 8px 12px;
+  text-align: left;
+}
+
+.prose-md table th {
+  background: var(--color-surface-2);
+  color: var(--color-ink);
+  font-weight: 600;
+}
+
+.prose-md hr {
+  border: 0;
+  border-top: 1px solid var(--color-line);
+  margin: 18px 0;
+}
+
+/* ============ 表单输入（设置面板） ============ */
+.form-input {
+  width: 100%;
+  box-sizing: border-box;
+  font-size: 15px;
+  color: var(--color-ink);
+  background: var(--color-surface);
+  border: 1px solid #d1d5db;
+  border-radius: var(--radius-md);
+  padding: 8px 10px;
+  outline: none;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  font-family: inherit;
+}
+
+.form-input::placeholder {
+  color: var(--color-muted);
+}
+
+.form-input:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}

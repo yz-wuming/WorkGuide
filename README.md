@@ -24,10 +24,12 @@ WorkGuide 让多个 Agent 在统一的工作流中协作：主 Agent 负责理�
 
 ### CLI
 
+CLI 以命令式、终端风格界面交互：输入 `/` 查看命令、`?` 查看帮助，`ready` 表示就绪。
+
 <div align="center">
-  <img src="./docs/images/cli-terminal.png" alt="WorkGuide CLI —— 终端界面" width="85%" />
+  <img src="./docs/images/cli-terminal.png" alt="WorkGuide CLI —— 终端风格界面" width="85%" />
   <br/>
-  <sub>CLI：命令式任务输入、`/` 命令与`?`帮助、`ready` 状态提示</sub>
+  <sub>CLI / 终端风格界面：命令式任务输入、`/` 命令、`?` 帮助与 `ready` 状态提示</sub>
 </div>
 
 ## 核心能力

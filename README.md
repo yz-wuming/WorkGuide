@@ -230,5 +230,3 @@ WorkGuide/
 ## License
 
 [MIT](./LICENSE)
-
-本项目基于字节跳动开源的 [WorkGuide](https://github.com/bytedance/workguide) 进行二次开发与工程化整理，原项目及相关贡献者的版权按原始 MIT License 保留。

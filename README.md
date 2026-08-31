@@ -12,10 +12,9 @@ WorkGuide 让多个 Agent 在统一的工作流中协作：主 Agent 负责理�
   <br/>
   <sub>Web UI：会话管理、任务输入、模型切换与文件上传</sub>
 </div>
-
+CLI 终端截图
 ![WorkGuide Web UI – 初始态](./docs/images/ui-entry.png "WorkGuide Web UI – 初始态")
 
-> CLI 终端截图将在后续补充。
 
 ## 核心能力
 

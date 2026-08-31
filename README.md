@@ -4,7 +4,6 @@
 
 WorkGuide 让多个 Agent 在统一的工作流中协作：主 Agent 负责理解任务、拆解步骤、调用工具并委派子 Agent，最终通过可流式的界面返回结果。它提供 **Web UI** 与 **CLI** 两种使用方式，并支持通过 **Skills、Tool、MCP** 扩展能力，是一个自包含、可按需配置的 Agent 系统底座。
 
-> 本项目基于 [ByteDance WorkGuide](https://github.com/bytedance/workguide)（MIT 协议）进行二次开发与工程化整理；源码版权依原始许可归其贡献者所有，本项目一并遵循 [MIT](./LICENSE)。
 
 ## Demo
 
